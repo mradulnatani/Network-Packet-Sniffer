@@ -18,19 +18,16 @@ from reportlab.platypus import (
 )
 
 
-
-
-# ANSI Escape Sequences for Professional Terminal UI Styling
-CLR      = "\033[0m"           # Reset all styling
-BOLD     = "\033[1m"           # Bold Text
-DIM      = "\033[2m"           # Dark Slate Grey
-CYAN     = "\033[36m"          # Bright Cyan
-GREEN    = "\033[32m"          # Vibrant Green
-YELLOW   = "\033[33m"          # Warning Yellow
-WHITE    = "\033[37m"          # Crisp White
-BG_NAVY  = "\033[48;5;17m"     # Deep Navy Blue Row Background
-BG_STRIP = "\033[48;5;234m"    # Charcoal Zebra Stripe Background
-TEXT_HDR = "\033[38;5;214m"    # Amber Header Text
+CLR      = "\033[0m"           
+BOLD     = "\033[1m"           
+DIM      = "\033[2m"           
+CYAN     = "\033[36m"         
+GREEN    = "\033[32m"         
+YELLOW   = "\033[33m"         
+WHITE    = "\033[37m"         
+BG_NAVY  = "\033[48;5;17m"    
+BG_STRIP = "\033[48;5;234m"    
+TEXT_HDR = "\033[38;5;214m"   
 
 def generate_pdf_report(
     connections,
@@ -50,9 +47,6 @@ def generate_pdf_report(
 
     duration = (end_time - start_time).total_seconds()
 
-    # ---------------------------------------------------------
-    # AGGREGATE PROTOCOL STATISTICS
-    # ---------------------------------------------------------
 
     protocol_stats = {}
 
@@ -91,9 +85,7 @@ def generate_pdf_report(
         reverse=True
     )[:10]
 
-    # ---------------------------------------------------------
-    # PDF DOCUMENT CONFIGURATION
-    # ---------------------------------------------------------
+
 
     doc = SimpleDocTemplate(
         str(pdf_path),
@@ -165,9 +157,6 @@ def generate_pdf_report(
 
     story = []
 
-    # ---------------------------------------------------------
-    # TITLE
-    # ---------------------------------------------------------
 
     story.append(Paragraph(
         "NETWORK TRAFFIC ANALYSIS REPORT",
@@ -238,9 +227,6 @@ def generate_pdf_report(
 
     story.append(overview_table)
 
-    # ---------------------------------------------------------
-    # PROTOCOL STATISTICS
-    # ---------------------------------------------------------
 
     story.append(Paragraph(
         "2. PROTOCOL DISTRIBUTION",
@@ -297,9 +283,6 @@ def generate_pdf_report(
 
     story.append(protocol_table)
 
-    # ---------------------------------------------------------
-    # TOP STREAMS
-    # ---------------------------------------------------------
 
     def create_stream_table(records, title):
         story.append(Paragraph(title, styles["SectionHeading"]))
@@ -364,9 +347,6 @@ def generate_pdf_report(
         "4. TOP 10 STREAMS BY DATA VOLUME"
     )
 
-    # ---------------------------------------------------------
-    # ALL TRACKED STREAMS
-    # ---------------------------------------------------------
 
     story.append(PageBreak())
 
@@ -429,10 +409,6 @@ def generate_pdf_report(
 
     story.append(all_stream_table)
 
-    # ---------------------------------------------------------
-    # LAST PACKET INSPECTION
-    # ---------------------------------------------------------
-
     story.append(Paragraph(
         "6. LAST PACKET INSPECTION",
         styles["SectionHeading"]
@@ -488,10 +464,6 @@ def generate_pdf_report(
         styles["HexDump"]
     ))
 
-    # ---------------------------------------------------------
-    # HEADER AND FOOTER
-    # ---------------------------------------------------------
-
     def add_page_number(canvas, document):
         canvas.saveState()
 
@@ -522,7 +494,6 @@ def generate_pdf_report(
 
         canvas.restoreState()
 
-    # Generate the PDF.
     doc.build(
         story,
         onFirstPage=add_page_number,
